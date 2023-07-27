@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongoose';
 
 export interface IVideoInput {
-    like?: number;
+    likes?: ObjectId[];
     thumbnailUrl: string;
     views?: number;
     kategori: string;

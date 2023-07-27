@@ -4,7 +4,7 @@ import { IVideo } from './video.interface';
 export type VideosDocument = IVideo & Document;
 
 const videoSchema = new Schema<VideosDocument>({
-    like: { type: Number, default: 0 },
+    likes: [{ type: Schema.Types.ObjectId, ref: 'users' }],
     thumbnailUrl: { type: String, required: true },
     views: { type: Number, default: 0 },
     kategori: { type: String, required: true },

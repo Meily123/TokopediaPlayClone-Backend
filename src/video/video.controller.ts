@@ -7,6 +7,7 @@ import { ERROR_CODE } from '../utils/error/errors';
 import commentRepository from './comment/comment.repository';
 import productRepository from "../product/product.repository";
 import videoRepository from "./video.repository";
+import {VideoModel} from "./video.model";
 
 const createVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -117,6 +118,63 @@ export async function getProductsByVideoId(req: Request, res: Response, next: Ne
     }
 }
 
+ const likeVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const videoId = req.params.id;
+
+        const user = await userRepository.findUserByUsername(req.user.username);
+
+        if (!user) {
+            throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
+        }
+
+        const video = await VideoModel.findById(videoId);
+
+        if (!video) {
+            throw new AppError(ERROR_CODE.NOT_FOUND, 'Video not found');
+        }
+
+        if (video.likes.includes(user.id)) {
+            throw new AppError(ERROR_CODE.BAD_REQUEST, 'User already liked the video');
+        }
+
+        video.likes.push(user.id);
+        await video.save();
+
+        res.status(200).json({ message: 'Video liked successfully' });
+    } catch (error) {
+        next(error);
+    }
+}
+
+const unlikeVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const videoId = req.params.id;
+
+        const user = await userRepository.findUserByUsername(req.user.username);
+
+        if (!user) {
+            throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
+        }
+
+        const video = await VideoModel.findById(videoId);
+
+        if (!video) {
+            throw new AppError(ERROR_CODE.NOT_FOUND, 'Video not found');
+        }
+
+        if (!video.likes.includes(user.id)) {
+            res.status(200).json({ message: 'Video unliked successfully' });
+        }
+
+        video.likes = video.likes.filter((id) => id.toString() !== user.id.toString());
+        await video.save();
+        res.status(200).json({ message: 'Video unliked successfully' });
+    } catch (error) {
+        next(error);
+    }
+}
+
 const videoController = {
     createVideo,
     getAllVideos,
@@ -125,6 +183,8 @@ const videoController = {
     createCommentForVideo,
     getCommentsForVideo,
     getProductsByVideoId,
+    unlikeVideo,
+    likeVideo,
 };
 
 export default videoController;
