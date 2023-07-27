@@ -24,6 +24,26 @@ const addProductToVideo = async (videoId: string, productId: ObjectId): Promise<
     return video.save();
 }
 
+const likeVideo = async (videoId: string, userId: ObjectId): Promise<IVideo | null> => {
+    const video = await VideoModel.findById(videoId).exec();
+    if (!video) {
+        return null;
+    }
+
+    video.likes.push(userId);
+    return video.save();
+}
+
+const unlikeVideo = async (videoId: string, userId: ObjectId): Promise<IVideo | null> => {
+    const video = await VideoModel.findById(videoId).exec();
+    if (!video) {
+        return null;
+    }
+
+    video.likes = video.likes.filter((id) => id.toString() !== userId.toString());
+    return await video.save();
+}
+
 const updateVideoViews = async (videoId: string): Promise<IVideo | null> => {
     return VideoModel.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true }).exec();
 }
@@ -34,6 +54,8 @@ const videoRepository = {
     getVideoById,
     addProductToVideo,
     updateVideoViews,
+    likeVideo,
+    unlikeVideo,
 }
 
 export default videoRepository;

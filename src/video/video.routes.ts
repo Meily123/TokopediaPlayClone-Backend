@@ -14,7 +14,7 @@ router.get('/:videoId/product', videoController.getProductsByVideoId);
 router.post('/:videoId/product', videoController.addProductToVideoById);
 router.post('/:videoId/comments', auth, videoController.createCommentForVideo);
 router.get('/:videoId/comments', videoController.getCommentsForVideo);
-router.post('/:id/like', auth,  videoController.likeVideo);
-router.post('/:id/unlike', auth,  videoController.unlikeVideo);
+router.post('/:videoId/like', auth,  videoController.likeVideo);
+router.post('/:videoId/unlike', auth,  videoController.unlikeVideo);
 
 export default router;
