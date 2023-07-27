@@ -1,11 +1,8 @@
 import {IUserRequest} from "./user.interface";
-const express = require('express');
 const { registerUser, loginUser } = require('./user.service');
-import bodyParser from "body-parser";
 
-const router = express.Router();
 
-router.post('/register', bodyParser.json(), async (req, res, next) => {
+const register =  async (req, res, next) => {
     try {
         const userData: IUserRequest = req.body;
         await registerUser(userData);
@@ -13,9 +10,9 @@ router.post('/register', bodyParser.json(), async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-});
+};
 
-router.post('/login', bodyParser.json(), async (req, res, next) => {
+const login = async (req, res, next) => {
     try {
         const userData: IUserRequest = req.body;
         const token = await loginUser(userData);
@@ -23,6 +20,12 @@ router.post('/login', bodyParser.json(), async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-});
+};
 
-module.exports = router;
+const userController = {
+    register,
+    login
+}
+
+export default userController;
+

@@ -2,13 +2,12 @@ import { createProduct, getAllProducts } from './product.repository';
 import {IProduct, IProductInput} from './product.interface';
 import { AppError } from '../utils/error/AppError';
 import {ERROR_CODE} from "../utils/error/errors";
-
-const { findUserByUsername } = require('../user/user.repository');
+import userRepository from "../user/user.repository";
 
 
 // @ts-ignore
 export async function addProduct(productInput: IProductInput, userReq): Promise<IProduct> {
-    const user = await findUserByUsername(userReq.username);
+    const user = await userRepository.findUserByUsername(userReq.username);
 
     // @ts-ignore
     const product = await createProduct({

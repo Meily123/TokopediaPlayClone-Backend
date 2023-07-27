@@ -6,14 +6,14 @@ require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { createUser, findUserByUsername } = require('./user.repository');
+import userRepository from "./user.repository";
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
 const registerUser = async (userData: IUserRequest): Promise<IUserResponse> => {
     const { username, password, imageUrl } = userData;
 
-    const existingUser = await findUserByUsername(username);
+    const existingUser = await userRepository.findUserByUsername(username);
     if (existingUser) {
         throw new AppError(ERROR_CODE.BAD_REQUEST, 'Username already exists.');
     }
@@ -34,10 +34,10 @@ const registerUser = async (userData: IUserRequest): Promise<IUserResponse> => {
 };
 
 
-export async function loginUser(userData: IUserRequest): Promise<string> {
+const loginUser = async (userData: IUserRequest): Promise<string> => {
     const { username, password } = userData;
 
-    const user = await findUserByUsername(username);
+    const user = await userRepository.findUserByUsername(username);
     if (!user) {
         throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found.');
     }

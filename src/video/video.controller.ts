@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { IVideoInput } from './video.interface';
 import {addProductToVideo, addVideo, retrieveAllVideos, retrieveVideoById} from './video.service';
-import { findUserByUsername } from '../user/user.repository';
+import userRepository from '../user/user.repository';
 import { AppError } from '../utils/error/AppError';
 import { ERROR_CODE } from '../utils/error/errors';
 import { createComment } from './comment/comment.repository';
@@ -12,7 +12,7 @@ export async function createVideo(req: Request, res: Response, next: NextFunctio
     try {
         const videoInput: IVideoInput = req.body;
         const userReq = req.user;
-        const user = await findUserByUsername(userReq.username);
+        const user = await userRepository.findUserByUsername(userReq.username);
 
         if (!user) {
             throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
