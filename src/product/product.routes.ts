@@ -7,9 +7,8 @@ const ProductRouter = express.Router();
 const auth = require("../middleware/authentication/auth");
 
 ProductRouter.use(bodyParser.json());
-ProductRouter.use(auth);
 
-ProductRouter.post('/', productController.createProduct);
+ProductRouter.post('/', auth, productController.createProduct);
 ProductRouter.get('/', productController.getAllProduct);
 
 export default ProductRouter;
