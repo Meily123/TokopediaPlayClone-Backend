@@ -5,7 +5,7 @@ import {addProductToVideo, addVideo, retrieveAllVideos, retrieveVideoById} from 
 import { findUserByUsername } from '../user/user.repository';
 import { AppError } from '../utils/error/AppError';
 import { ERROR_CODE } from '../utils/error/errors';
-import { createComment } from '../comment/comment.repository';
+import { createComment } from './comment/comment.repository';
 import { addCommentToVideo } from './video.repository';
 
 export async function createVideo(req: Request, res: Response, next: NextFunction): Promise<void> {
