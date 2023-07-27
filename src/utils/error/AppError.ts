@@ -6,15 +6,15 @@ export class AppError extends Error {
     public status: number = null;
     public errorCode: string;
 
-    errors?: any;
-    constructor(errorCode: string = ERROR_CODE.INTERNAL_SERVER_ERROR, errors: any = null) {
+    details?: any;
+    constructor(errorCode: string = ERROR_CODE.INTERNAL_SERVER_ERROR, details: any = null) {
         super(errorCode);
         Object.setPrototypeOf(this, new.target.prototype);
         const error = get(ERROR_LIST, errorCode);
         this.errorCode = errorCode;
         this.status = error.statusCode;
         this.message = error.message;
-        this.errors = errors;
+        this.details = details;
     }
 
     getErrorResponse() {
@@ -22,10 +22,6 @@ export class AppError extends Error {
             code: this.errorCode,
             message: this.message,
         };
-
-        if (this.errors !== null) {
-            response.errors = this.errors;
-        }
 
         return response;
     }

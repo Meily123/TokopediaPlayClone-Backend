@@ -5,7 +5,7 @@ export const errorHandler = (err: Error, req, res, next) => {
     console.log('Path:', req.path);
     console.error('Error occured:\n', err);
     if (err instanceof AppError) {
-        res.status(err.status).send(err.getErrorResponse());
+        res.status(err.status).send({error:err.getErrorResponse()});
     } else {
         res.status(500).send({
             code: "INTERNAL SERVER ERROR",
