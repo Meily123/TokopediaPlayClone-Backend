@@ -3,19 +3,19 @@ import { VideoModel} from './video.model';
 import {IVideoInput, IVideo} from "./video.interface";
 import {ObjectId} from "mongoose";
 
-export async function createVideo(videoInput: IVideoInput): Promise<IVideo> {
+const createVideo = async (videoInput: IVideoInput): Promise<IVideo> => {
     return VideoModel.create(videoInput);
-}
+};
 
-export async function getAllVideos(): Promise<IVideo[]> {
+const getAllVideos = async (): Promise<IVideo[]> => {
     return VideoModel.find().exec();
 }
 
-export async function getVideoById(id: string): Promise<IVideo | null> {
+const getVideoById = async (id: string): Promise<IVideo | null> => {
     return VideoModel.findById(id).exec();
 }
 
-export async function addProductToVideo(videoId: string, productId: ObjectId): Promise<IVideo | null> {
+const addProductToVideo = async (videoId: string, productId: ObjectId): Promise<IVideo | null> => {
     const video = await VideoModel.findById(videoId).exec();
     if (!video) {
         return null;
@@ -25,7 +25,7 @@ export async function addProductToVideo(videoId: string, productId: ObjectId): P
     return video.save();
 }
 
-export async function addCommentToVideo(videoId: ObjectId, commentId: ObjectId): Promise<IVideo | null> {
+const addCommentToVideo = async (videoId: ObjectId, commentId: ObjectId): Promise<IVideo | null> => {
     const video = await VideoModel.findById(videoId).exec();
     if (!video) {
         return null;
@@ -34,3 +34,13 @@ export async function addCommentToVideo(videoId: ObjectId, commentId: ObjectId):
     video.comments.push(commentId);
     return video.save();
 }
+
+const videoRepository = {
+    createVideo,
+    getAllVideos,
+    getVideoById,
+    addProductToVideo,
+    addCommentToVideo,
+}
+
+export default videoRepository;

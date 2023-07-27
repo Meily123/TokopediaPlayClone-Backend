@@ -1,23 +1,17 @@
 // src/video/video.routes.ts
 import express from 'express';
 import bodyParser from 'body-parser';
-import {
-    addProductToVideoById,
-    createCommentForVideo,
-    createVideo,
-    getAllVideos,
-    getVideoById
-} from './video.controller';
+import videoController from './video.controller';
 
 const router = express.Router();
 const auth = require("../middleware/authentication/auth");
 
 router.use(bodyParser.json());
 
-router.post('/', auth, createVideo);
-router.get('/', getAllVideos);
-router.get('/:id', getVideoById);
-router.post('/:videoId/product/:productId', addProductToVideoById);
-router.post('/:videoId/comments', auth, createCommentForVideo);
+router.post('/', auth, videoController.createVideo);
+router.get('/', videoController.getAllVideos);
+router.get('/:id', videoController.getVideoById);
+router.post('/:videoId/product/:productId', videoController.addProductToVideoById);
+router.post('/:videoId/comments', auth, videoController.createCommentForVideo);
 
 export default router;

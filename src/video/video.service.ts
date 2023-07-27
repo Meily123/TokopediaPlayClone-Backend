@@ -1,25 +1,34 @@
 // src/video/video.service.ts
 import { IVideoInput, IVideo } from './video.interface';
-import { createVideo, getAllVideos, getVideoById, addProductToVideo as addToVideo } from './video.repository';
+import videoRepository from './video.repository';
 import {ProductModel} from "../product/product.model";
 
-export async function addVideo(videoInput: IVideoInput): Promise<IVideo> {
-    return createVideo(videoInput);
-}
+const addVideo = async (videoInput: IVideoInput): Promise<IVideo> => {
+    return videoRepository.createVideo(videoInput);
+};
 
-export async function retrieveAllVideos(): Promise<IVideo[]> {
-    return getAllVideos();
-}
+const retrieveAllVideos = async (): Promise<IVideo[]> => {
+    return videoRepository.getAllVideos();
+};
 
-export async function retrieveVideoById(id: string): Promise<IVideo | null> {
-    return getVideoById(id);
-}
+const retrieveVideoById = async (id: string): Promise<IVideo | null> => {
+    return videoRepository.getVideoById(id);
+};
 
-export async function addProductToVideo(videoId: string, productId: string): Promise<IVideo | null> {
+const addProductToVideo = async (videoId: string, productId: string): Promise<IVideo | null> => {
     const product = await ProductModel.findById(productId).exec();
     if (!product) {
         return null;
     }
 
-    return addToVideo(videoId, product.id);
-}
+    return videoRepository.addProductToVideo(videoId, product.id);
+};
+
+const videoService = {
+    addVideo,
+    retrieveAllVideos,
+    retrieveVideoById,
+    addProductToVideo
+};
+
+export default videoService;
