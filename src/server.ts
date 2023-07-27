@@ -9,9 +9,9 @@ const auth = require("./middleware/authentication/auth");
 const PORT = process.env.PORT;
 const app = express();
 
-const productController = require("./product/product.controller");
-import videoRouter from './video/video.routes';
-import userRouter from "./user/user.routes";
+import VideoRouter from './video/video.routes';
+import UserRouter from "./user/user.routes";
+import ProductRouter from "./product/product.routes";
 
 connect();
 
@@ -20,11 +20,9 @@ app.get("/welcome",auth, errorHandler, (req, res) => {
     res.status(200).send("Welcome 🙌 ");
 });
 
-app.use("/user", userRouter, errorHandler);
-app.use('/videos', videoRouter, errorHandler);
-
-// Routes
-app.use("/products",auth, productController, errorHandler);
+app.use("/user", UserRouter, errorHandler);
+app.use('/videos', VideoRouter, errorHandler);
+app.use("/products",ProductRouter, errorHandler);
 
 
 app.listen(PORT, () => {

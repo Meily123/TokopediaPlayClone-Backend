@@ -2,11 +2,11 @@ import bodyParser from "body-parser";
 import userController from "./user.controller";
 import express from "express";
 
-const userRouter = express.Router();
+const UserRouter = express.Router();
 
-userRouter.use(bodyParser.json());
+UserRouter.use(bodyParser.json());
 
-userRouter.post('/login', userController.login);
-userRouter.post('/register', userController.register);
+UserRouter.post('/login', userController.login);
+UserRouter.post('/register', userController.register);
 
-export default userRouter;
+export default UserRouter;

@@ -1,4 +1,4 @@
-import { createProduct, getAllProducts } from './product.repository';
+import productRepository from "./product.repository";
 import {IProduct, IProductInput} from './product.interface';
 import { AppError } from '../utils/error/AppError';
 import {ERROR_CODE} from "../utils/error/errors";
@@ -6,11 +6,11 @@ import userRepository from "../user/user.repository";
 
 
 // @ts-ignore
-export async function addProduct(productInput: IProductInput, userReq): Promise<IProduct> {
+const addProduct = async (productInput: IProductInput, userReq): Promise<IProduct> => {
     const user = await userRepository.findUserByUsername(userReq.username);
 
     // @ts-ignore
-    const product = await createProduct({
+    const product = await productRepository.createProduct({
         ...productInput,
         createdBy: user.id,
     });
@@ -21,10 +21,17 @@ export async function addProduct(productInput: IProductInput, userReq): Promise<
     return product;
 }
 
-export async function retrieveAllProducts(): Promise<IProduct[]> {
-    const products = await getAllProducts();
+const retrieveAllProducts = async (): Promise<IProduct[]> => {
+    const products = await productRepository.getAllProducts();
     if (!products) {
         throw new AppError(ERROR_CODE.INTERNAL_SERVER_ERROR, 'Failed to retrieve products.');
     }
     return products;
 }
+
+const productService = {
+    addProduct,
+    retrieveAllProducts,
+}
+
+export default productService;

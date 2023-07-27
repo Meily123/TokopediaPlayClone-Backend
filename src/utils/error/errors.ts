@@ -6,6 +6,7 @@ enum ERROR_CODE {
     INTERNAL_SERVER_ERROR= 'INTERNAL_SERVER_ERROR',
     CONFLICT= 'CONFLICT',
     VALIDATION_ERROR= 'VALIDATION_ERROR',
+    FAILED_CREATE_PRODUCT= 'FAILED_CREATE_PRODUCT',
 };
 
 const ERROR_LIST = {
@@ -36,6 +37,10 @@ const ERROR_LIST = {
     [ERROR_CODE.VALIDATION_ERROR]: {
         statusCode: 422,
         message: 'Input validation failed. Please check your data.',
+    },
+    [ERROR_CODE.FAILED_CREATE_PRODUCT]: {
+        statusCode: 400,
+        message: 'Creating product failed.',
     },
 };
 export {ERROR_LIST, ERROR_CODE};
