@@ -5,7 +5,7 @@ import {addProductToVideo, addVideo, retrieveAllVideos, retrieveVideoById} from 
 import userRepository from '../user/user.repository';
 import { AppError } from '../utils/error/AppError';
 import { ERROR_CODE } from '../utils/error/errors';
-import { createComment } from './comment/comment.repository';
+import commentRepository from './comment/comment.repository';
 import { addCommentToVideo } from './video.repository';
 
 export async function createVideo(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -74,7 +74,7 @@ export async function createCommentForVideo(req: Request, res: Response, next: N
         const video = await retrieveVideoById(videoId);
 
         // Create the comment and get its ID
-        const comment = await createComment(video.id, req.user.username, content);
+        const comment = await commentRepository.createComment(video.id, req.user.username, content);
         const commentId = comment.id;
 
         // Add the comment to the video

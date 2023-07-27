@@ -2,7 +2,7 @@
 import { CommentModel, IComment } from './comment.model';
 import {ObjectId} from "mongoose";
 
-export async function createComment(videoId: ObjectId, username: string, content: string): Promise<IComment> {
+const createComment = async (videoId: ObjectId, username: string, content: string): Promise<IComment> => {
 
     const comment = new CommentModel({
         videoId,
@@ -10,4 +10,10 @@ export async function createComment(videoId: ObjectId, username: string, content
         content,
     });
     return comment.save();
-}
+};
+
+const commentRepository = {
+    createComment,
+};
+
+export default commentRepository;
