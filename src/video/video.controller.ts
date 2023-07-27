@@ -6,6 +6,8 @@ import { AppError } from '../utils/error/AppError';
 import { ERROR_CODE } from '../utils/error/errors';
 import commentRepository from './comment/comment.repository';
 import productRepository from "../product/product.repository";
+import videoRepository from "./video.repository";
+
 const createVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const videoInput: IVideoInput = req.body;
@@ -17,8 +19,8 @@ const createVideo = async (req: Request, res: Response, next: NextFunction): Pro
         }
 
         videoInput.createdBy = user.id;
-        await videoService.addVideo(videoInput);
-        res.status(201);
+        const video = await videoService.addVideo(videoInput);
+        res.status(201).json({data: video});
     } catch (error) {
         next(error);
     }
@@ -37,6 +39,9 @@ const getAllVideos = async (req: Request, res: Response, next: NextFunction): Pr
 const getVideoById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.params;
+
+        await videoRepository.updateVideoViews(id);
+
         const video = await videoService.retrieveVideoById(id);
 
         if (!video) {

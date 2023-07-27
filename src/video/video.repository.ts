@@ -24,11 +24,16 @@ const addProductToVideo = async (videoId: string, productId: ObjectId): Promise<
     return video.save();
 }
 
+const updateVideoViews = async (videoId: string): Promise<IVideo | null> => {
+    return VideoModel.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true }).exec();
+}
+
 const videoRepository = {
     createVideo,
     getAllVideos,
     getVideoById,
     addProductToVideo,
+    updateVideoViews,
 }
 
 export default videoRepository;

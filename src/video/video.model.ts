@@ -1,5 +1,5 @@
-import mongoose, {Document, Model, Schema} from 'mongoose';
-import {IVideo} from "./video.interface";
+import mongoose, { Document, Model, Schema } from 'mongoose';
+import { IVideo } from './video.interface';
 
 export type VideosDocument = IVideo & Document;
 
@@ -14,5 +14,4 @@ const videoSchema = new Schema<VideosDocument>({
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 });
 
-export const VideoModel:Model<VideosDocument> = mongoose.model('videos', videoSchema);
-
+export const VideoModel: Model<VideosDocument> = mongoose.model('videos', videoSchema);
