@@ -12,15 +12,7 @@ import {VideoModel} from "./video.model";
 const createVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const videoInput: IVideoInput = req.body;
-        const userReq = req.user;
-        const user = await userRepository.findUserByUsername(userReq.username);
-
-        if (!user) {
-            throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
-        }
-
-        videoInput.createdBy = user.id;
-        const video = await videoService.addVideo(videoInput);
+        const video = await videoService.addVideo(videoInput, req.user);
         res.status(201).json({data: video});
     } catch (error) {
         next(error);
@@ -120,7 +112,7 @@ export async function getProductsByVideoId(req: Request, res: Response, next: Ne
 
  const likeVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const videoId = req.params.id;
+        const { videoId } = req.params;
 
         const user = await userRepository.findUserByUsername(req.user.username);
 
@@ -149,7 +141,7 @@ export async function getProductsByVideoId(req: Request, res: Response, next: Ne
 
 const unlikeVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const videoId = req.params.id;
+        const { videoId } = req.params;
 
         const user = await userRepository.findUserByUsername(req.user.username);
 

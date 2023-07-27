@@ -1,8 +1,18 @@
 import { IVideoInput, IVideo } from './video.interface';
 import videoRepository from './video.repository';
 import {ProductModel} from "../product/product.model";
+import userRepository from "../user/user.repository";
+import {AppError} from "../utils/error/AppError";
+import {ERROR_CODE} from "../utils/error/errors";
+import {IUser} from "../user/user.interface";
 
-const addVideo = async (videoInput: IVideoInput): Promise<IVideo> => {
+const addVideo = async (videoInput: IVideoInput, requestUser: IUser): Promise<IVideo> => {
+    const user = await userRepository.findUserByUsername(requestUser.username);
+    if (!user) {
+        throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
+    }
+
+    videoInput.createdBy = user.id;
     return videoRepository.createVideo(videoInput);
 };
 
