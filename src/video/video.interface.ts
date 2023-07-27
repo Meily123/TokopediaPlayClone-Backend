@@ -1,4 +1,3 @@
-// src/video/video.interface.ts
 import { ObjectId } from 'mongoose';
 
 export interface IVideoInput {

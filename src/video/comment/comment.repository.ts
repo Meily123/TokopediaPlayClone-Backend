@@ -1,6 +1,5 @@
-// src/comment/comment.repository.ts
 import { CommentModel, IComment } from './comment.model';
-import {ObjectId} from "mongoose";
+import mongoose, {ObjectId} from "mongoose";
 
 const createComment = async (videoId: ObjectId, username: string, content: string): Promise<IComment> => {
 
@@ -12,8 +11,13 @@ const createComment = async (videoId: ObjectId, username: string, content: strin
     return comment.save();
 };
 
+const getCommentsByVideoId = async (videoId: string): Promise<IComment[]> => {
+    return CommentModel.find({ videoId: new mongoose.Types.ObjectId(videoId) }).exec();
+}
+
 const commentRepository = {
     createComment,
+    getCommentsByVideoId
 };
 
 export default commentRepository;

@@ -3,6 +3,7 @@ import { ProductModel } from './product.model';
 import {IProduct, IProductDB} from './product.interface';
 import { AppError } from "../utils/error/AppError";
 import { ERROR_CODE } from "../utils/error/errors";
+import mongoose from "mongoose";
 
 function mapToProductInterface(doc: any): IProductDB {
     return {
@@ -29,9 +30,19 @@ const getAllProducts = async (): Promise<IProduct[]> => {
     return products.map((product) => mapToProductInterface(product.toJSON()));
 }
 
+const getProductsByIds = (productIds: string[]): Promise<IProduct[]> => {
+    // Convert the array of product IDs to an array of ObjectId
+    const productObjectIds = productIds.map((productId) => new mongoose.Types.ObjectId(productId));
+
+    // Use the find() method to retrieve products by the list of product IDs
+    // @ts-ignore
+    return ProductModel.find({ _id: { $in: productObjectIds } }).exec();
+}
+
 const productRepositoty = {
     createProduct,
     getAllProducts,
+    getProductsByIds
 }
 
 export default productRepositoty;

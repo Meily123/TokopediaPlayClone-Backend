@@ -1,4 +1,3 @@
-// src/video/video.controller.ts
 import { Request, Response, NextFunction } from 'express';
 import { IVideoInput } from './video.interface';
 import videoService from './video.service';
@@ -6,7 +5,7 @@ import userRepository from '../user/user.repository';
 import { AppError } from '../utils/error/AppError';
 import { ERROR_CODE } from '../utils/error/errors';
 import commentRepository from './comment/comment.repository';
-
+import productRepository from "../product/product.repository";
 const createVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const videoInput: IVideoInput = req.body;
@@ -52,7 +51,8 @@ const getVideoById = async (req: Request, res: Response, next: NextFunction): Pr
 
 const addProductToVideoById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { videoId, productId } = req.params;
+        const { videoId } = req.params;
+        const { productId } = req.body;
         const updatedVideo = await videoService.addProductToVideo(videoId, productId);
 
         if (!updatedVideo) {
@@ -79,12 +79,47 @@ const createCommentForVideo = async (req: Request, res: Response, next: NextFunc
     }
 };
 
+const getCommentsForVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { videoId } = req.params;
+
+        // Get comments by video ID
+        const comments = await commentRepository.getCommentsByVideoId(videoId);
+
+        // Handle the scenario where no comments are found
+        if (comments.length === 0) {
+            throw new AppError(ERROR_CODE.NOT_FOUND, 'No comments found for the video');
+        }
+
+        res.status(200).json(comments);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export async function getProductsByVideoId(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+        const { videoId} = req.params;
+        const video = await videoService.retrieveVideoById(videoId);
+
+        // Get products by the list of product IDs
+        const productIds = video.products.map((id) => id.toString());
+        const products = await productRepository.getProductsByIds(productIds);
+
+        res.status(200).json({ data: products });
+    } catch (error) {
+        next(error);
+    }
+}
+
 const videoController = {
     createVideo,
     getAllVideos,
     getVideoById,
     addProductToVideoById,
     createCommentForVideo,
+    getCommentsForVideo,
+    getProductsByVideoId,
 };
 
 export default videoController;

@@ -1,4 +1,3 @@
-// src/video/video.repository.ts
 import { VideoModel} from './video.model';
 import {IVideoInput, IVideo} from "./video.interface";
 import {ObjectId} from "mongoose";

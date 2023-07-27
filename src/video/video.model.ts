@@ -1,4 +1,3 @@
-// src/video/video.model.ts
 import mongoose, {Document, Model, Schema} from 'mongoose';
 import {IVideo} from "./video.interface";
 

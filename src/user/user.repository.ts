@@ -1,4 +1,3 @@
-// src/repositories/userRepository.js
 import {IUser, IUserRequest} from "./user.interface";
 import {User} from "./user.model";
 

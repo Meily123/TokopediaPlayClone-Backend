@@ -1,4 +1,3 @@
-// src/video/video.service.ts
 import { IVideoInput, IVideo } from './video.interface';
 import videoRepository from './video.repository';
 import {ProductModel} from "../product/product.model";
