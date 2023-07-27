@@ -13,7 +13,6 @@ const videoSchema = new Schema<VideosDocument>({
     createdBy: { type: Schema.Types.ObjectId, required: true, ref: 'users' },
     videoUrl: { type: String, required: true },
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 export const VideoModel:Model<VideosDocument> = mongoose.model('videos', videoSchema);

@@ -5,7 +5,7 @@ const createProduct = async (req, res, next) => {
     try {
         const productRequest: IProductInput = req.body;
         const product = await productService.addProduct(productRequest, req.user);
-        res.status(201).json(product);
+        res.status(201).json({data: product});
     } catch (error) {
         next(error);
     }
@@ -15,7 +15,7 @@ const createProduct = async (req, res, next) => {
 const getAllProduct = async (req, res, next) => {
     try {
         const products = await productService.retrieveAllProducts();
-        res.status(200).json(products);
+        res.status(200).json({data: products});
     } catch (error) {
         next(error);
     }

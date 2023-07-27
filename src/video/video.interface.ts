@@ -10,7 +10,6 @@ export interface IVideoInput {
     createdBy: ObjectId;
     videoUrl: string;
     products?: ObjectId[];
-    comments?: ObjectId[];
 }
 
 export interface IVideo extends IVideoInput {

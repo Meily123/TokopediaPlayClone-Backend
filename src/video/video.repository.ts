@@ -25,22 +25,11 @@ const addProductToVideo = async (videoId: string, productId: ObjectId): Promise<
     return video.save();
 }
 
-const addCommentToVideo = async (videoId: ObjectId, commentId: ObjectId): Promise<IVideo | null> => {
-    const video = await VideoModel.findById(videoId).exec();
-    if (!video) {
-        return null;
-    }
-
-    video.comments.push(commentId);
-    return video.save();
-}
-
 const videoRepository = {
     createVideo,
     getAllVideos,
     getVideoById,
     addProductToVideo,
-    addCommentToVideo,
 }
 
 export default videoRepository;

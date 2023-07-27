@@ -6,7 +6,7 @@ const register =  async (req, res, next) => {
     try {
         const userData: IUserRequest = req.body;
         await registerUser(userData);
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ data: {message: 'User registered successfully'}});
     } catch (error) {
         next(error);
     }

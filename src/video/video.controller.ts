@@ -6,7 +6,6 @@ import userRepository from '../user/user.repository';
 import { AppError } from '../utils/error/AppError';
 import { ERROR_CODE } from '../utils/error/errors';
 import commentRepository from './comment/comment.repository';
-import videoRepository from './video.repository';
 
 const createVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -19,22 +18,22 @@ const createVideo = async (req: Request, res: Response, next: NextFunction): Pro
         }
 
         videoInput.createdBy = user.id;
-        const video = await videoService.addVideo(videoInput);
-        res.status(201).json(video);
+        await videoService.addVideo(videoInput);
+        res.status(201);
     } catch (error) {
         next(error);
     }
-}
+};
 
 // @ts-ignore
 const getAllVideos = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const videos = await videoService.retrieveAllVideos();
-        res.status(200).json(videos);
+        res.status(200).json({data: videos});
     } catch (error) {
         next(error);
     }
-}
+};
 
 const getVideoById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -45,11 +44,11 @@ const getVideoById = async (req: Request, res: Response, next: NextFunction): Pr
             throw new AppError(ERROR_CODE.NOT_FOUND, 'Video not found');
         }
 
-        res.status(200).json(video);
+        res.status(200).json({data: video});
     } catch (error) {
         next(error);
     }
-}
+};
 
 const addProductToVideoById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -60,11 +59,11 @@ const addProductToVideoById = async (req: Request, res: Response, next: NextFunc
             throw new AppError(ERROR_CODE.NOT_FOUND, 'Video or Product not found');
         }
 
-        res.status(200).json(updatedVideo);
+        res.status(200).json({data: updatedVideo});
     } catch (error) {
         next(error);
     }
-}
+};
 
 const createCommentForVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -72,23 +71,13 @@ const createCommentForVideo = async (req: Request, res: Response, next: NextFunc
         const { content } = req.body;
 
         const video = await videoService.retrieveVideoById(videoId);
-
         // Create the comment and get its ID
         const comment = await commentRepository.createComment(video.id, req.user.username, content);
-        const commentId = comment.id;
-
-        // Add the comment to the video
-        const updatedVideo = await videoRepository.addCommentToVideo(video.id, commentId);
-
-        if (!updatedVideo) {
-            throw new AppError(ERROR_CODE.NOT_FOUND, 'Video or Comment not found');
-        }
-
-        res.status(200).json(updatedVideo);
+        res.status(201).json({data:comment});
     } catch (error) {
         next(error);
     }
-}
+};
 
 const videoController = {
     createVideo,
@@ -96,6 +85,6 @@ const videoController = {
     getVideoById,
     addProductToVideoById,
     createCommentForVideo,
-}
+};
 
 export default videoController;
