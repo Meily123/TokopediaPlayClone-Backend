@@ -106,6 +106,10 @@ const unlikeVideo = async (videoId: string, username: string) => {
     return await videoRepository.unlikeVideo(videoId, user.id);
 };
 
+const searchVideos = async (query): Promise<IVideo[]> => {
+    return videoRepository.searchVideos(query);
+};
+
 const videoService = {
     addVideo,
     retrieveAllVideos,
@@ -115,6 +119,7 @@ const videoService = {
     getProductbyVideoId,
     likeVideo,
     unlikeVideo,
+    searchVideos,
 };
 
 export default videoService;

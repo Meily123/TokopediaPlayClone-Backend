@@ -9,6 +9,7 @@ router.use(bodyParser.json());
 
 router.post('/', auth, videoController.createVideo);
 router.get('/', videoController.getAllVideos);
+router.get('/search', videoController.searchVideo);
 router.get('/:id', videoController.getVideoById);
 router.get('/:videoId/product', videoController.getProductsByVideoId);
 router.post('/:videoId/product', auth, videoController.addProductToVideoById);

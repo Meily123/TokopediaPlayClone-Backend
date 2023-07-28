@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { IVideoInput } from './video.interface';
 import videoService from './video.service';
 import commentRepository from './comment/comment.repository';
+import {AppError} from "../utils/error/AppError";
+import {ERROR_CODE} from "../utils/error/errors";
 
 
 const createVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -100,6 +102,22 @@ const unlikeVideo = async (req: Request, res: Response, next: NextFunction): Pro
     }
 };
 
+const searchVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const { query } = req.query;
+        console.log(query);
+        if (!query || typeof query !== 'string') {
+            throw new AppError(ERROR_CODE.BAD_REQUEST);
+        }
+
+        const videos = await videoService.searchVideos(query.toString()); // Ensure the query is a string
+        console.log(videos);
+        res.status(200).json({ data: videos });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const videoController = {
     createVideo,
     getAllVideos,
@@ -110,6 +128,7 @@ const videoController = {
     getProductsByVideoId,
     unlikeVideo,
     likeVideo,
+    searchVideo,
 };
 
 export default videoController;

@@ -48,6 +48,11 @@ const updateVideoViews = async (videoId: string): Promise<IVideo | null> => {
     return VideoModel.findByIdAndUpdate(videoId, { $inc: { views: 1 } }, { new: true }).exec();
 }
 
+const searchVideos = async (query: string): Promise<IVideo[]> => {
+    const regex = new RegExp(query, 'i');
+    return VideoModel.find({ $or: [{ kategori: regex }, { description: regex }] }).exec();
+};
+
 const videoRepository = {
     createVideo,
     getAllVideos,
@@ -56,6 +61,7 @@ const videoRepository = {
     updateVideoViews,
     likeVideo,
     unlikeVideo,
+    searchVideos,
 }
 
 export default videoRepository;
