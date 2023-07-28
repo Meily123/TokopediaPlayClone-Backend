@@ -16,15 +16,16 @@ const addProduct = async (productInput: IProductInput, userReq): Promise<IProduc
     });
 
     if (!product) {
-        throw new AppError(ERROR_CODE.INTERNAL_SERVER_ERROR, 'Failed to add product.');
+        throw new AppError(ERROR_CODE.INTERNAL_SERVER_ERROR);
     }
+
     return product;
 }
 
 const retrieveAllProducts = async (): Promise<IProduct[]> => {
     const products = await productRepository.getAllProducts();
     if (!products) {
-        throw new AppError(ERROR_CODE.INTERNAL_SERVER_ERROR, 'Failed to retrieve products.');
+        throw new AppError(ERROR_CODE.INTERNAL_SERVER_ERROR);
     }
     return products;
 }

@@ -12,7 +12,7 @@ import {VideoModel} from "./video.model";
 const addVideo = async (videoInput: IVideoInput, requestUser: IUser): Promise<IVideo> => {
     const user = await userRepository.findUserByUsername(requestUser.username);
     if (!user) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
+        throw new AppError(ERROR_CODE.UNAUTHORIZED);
     }
 
     videoInput.createdBy = user.id;
@@ -26,7 +26,7 @@ const retrieveAllVideos = async (): Promise<IVideo[]> => {
 const retrieveVideoById = async (id: string): Promise<IVideo | null> => {
     const video = await videoRepository.updateVideoViews(id);
     if (!video) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'Video not found');
+        throw new AppError(ERROR_CODE.NOT_FOUND);
     }
     return video;
 };
@@ -34,13 +34,22 @@ const retrieveVideoById = async (id: string): Promise<IVideo | null> => {
 const addProductToVideo = async (videoId: string, productId: string): Promise<IVideo | null> => {
     const product = await ProductModel.findById(productId).exec();
     if (!product) {
-        return null;
+        throw new AppError(ERROR_CODE.BAD_REQUEST);
+    }
+
+    const video = await VideoModel.findById(videoId);
+    if (!video) {
+        throw new AppError(ERROR_CODE.NOT_FOUND);
+    }
+
+    if (video.products.includes(product.id)) {
+        return video;
     }
 
     const updatedVideo = videoRepository.addProductToVideo(videoId, product.id);
 
     if (!updatedVideo) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'Video or Product not found');
+        throw new AppError(ERROR_CODE.NOT_FOUND);
     }
     return updatedVideo;
 };
@@ -62,13 +71,13 @@ const likeVideo = async (videoId: string, username: string) => {
     const user = await userRepository.findUserByUsername(username);
 
     if (!user) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
+        throw new AppError(ERROR_CODE.UNAUTHORIZED);
     }
 
     const video = await VideoModel.findById(videoId);
 
     if (!video) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'Video not found');
+        throw new AppError(ERROR_CODE.NOT_FOUND);
     }
 
     if (video.likes.includes(user.id)) {
@@ -82,12 +91,12 @@ const unlikeVideo = async (videoId: string, username: string) => {
     const user = await userRepository.findUserByUsername(username);
 
     if (!user) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'User not found');
+        throw new AppError(ERROR_CODE.UNAUTHORIZED);
     }
 
     const video = await VideoModel.findById(videoId);
     if (!video) {
-        throw new AppError(ERROR_CODE.NOT_FOUND, 'Video not found');
+        throw new AppError(ERROR_CODE.NOT_FOUND);
     }
 
     if (!video.likes.includes(user.id)) {

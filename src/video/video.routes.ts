@@ -11,7 +11,7 @@ router.post('/', auth, videoController.createVideo);
 router.get('/', videoController.getAllVideos);
 router.get('/:id', videoController.getVideoById);
 router.get('/:videoId/product', videoController.getProductsByVideoId);
-router.post('/:videoId/product', videoController.addProductToVideoById);
+router.post('/:videoId/product', auth, videoController.addProductToVideoById);
 router.post('/:videoId/comments', auth, videoController.createCommentForVideo);
 router.get('/:videoId/comments', videoController.getCommentsForVideo);
 router.post('/:videoId/like', auth,  videoController.likeVideo);

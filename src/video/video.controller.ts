@@ -66,7 +66,7 @@ const getCommentsForVideo = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export async function getProductsByVideoId(req: Request, res: Response, next: NextFunction): Promise<void> {
+const getProductsByVideoId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { videoId } = req.params;
         const products = await videoService.getProductbyVideoId(videoId);
@@ -74,7 +74,7 @@ export async function getProductsByVideoId(req: Request, res: Response, next: Ne
     } catch (error) {
         next(error);
     }
-}
+};
 
  const likeVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -86,7 +86,7 @@ export async function getProductsByVideoId(req: Request, res: Response, next: Ne
     } catch (error) {
         next(error);
     }
-}
+};
 
 const unlikeVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -98,7 +98,7 @@ const unlikeVideo = async (req: Request, res: Response, next: NextFunction): Pro
     } catch (error) {
         next(error);
     }
-}
+};
 
 const videoController = {
     createVideo,
