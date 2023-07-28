@@ -105,7 +105,7 @@ const unlikeVideo = async (req: Request, res: Response, next: NextFunction): Pro
 const searchVideo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { query } = req.query;
-        console.log(query);
+
         if (!query || typeof query !== 'string') {
             throw new AppError(ERROR_CODE.BAD_REQUEST);
         }
