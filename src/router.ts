@@ -6,7 +6,7 @@ import ProductRouter from "./product/product.routes";
 import express from "express";
 const router = express.Router();
 
-router.use("/user", UserRouter, errorHandler);
+router.use("/users", UserRouter, errorHandler);
 router.use('/videos', VideoRouter, errorHandler);
 router.use("/products",ProductRouter, errorHandler);
 

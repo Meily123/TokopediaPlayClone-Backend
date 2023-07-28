@@ -60,7 +60,7 @@ const getCommentsForVideo = async (req: Request, res: Response, next: NextFuncti
     try {
         const { videoId } = req.params;
         const comments = await commentRepository.getCommentsByVideoId(videoId);
-        res.status(200).json(comments);
+        res.status(200).json({data: comments});
     } catch (error) {
         next(error);
     }
