@@ -7,7 +7,6 @@ import express from "express";
 import router from "./router";
 const auth = require("./middleware/authentication/auth");
 const cors = require ('cors');
-
 const PORT = process.env.PORT;
 const app = express();
 
