@@ -55,14 +55,14 @@ const addProductToVideo = async (videoId: string, productId: string): Promise<IV
 };
 
 const createCommentForVideo = async (videoId: string, username: string, content: string) => {
-    const video = await videoService.retrieveVideoById(videoId);
+    const video = await videoRepository.getVideoById(videoId);
     // Create the comment and get its ID
 
     return (await commentRepository.createComment (video.id, username, content));
 };
 
 const getProductbyVideoId = async (videoId: string) => {
-    const video = await videoService.retrieveVideoById(videoId);
+    const video = await videoRepository.getVideoById(videoId);
     const productIds = video.products.map((id) => id.toString());
     return await productRepository.getProductsByIds(productIds);
 };

@@ -11,7 +11,7 @@ const getAllVideos = async (): Promise<IVideo[]> => {
 }
 
 const getVideoById = async (id: string): Promise<IVideo | null> => {
-    return VideoModel.findById(id).exec();
+    return await VideoModel.findById(id).exec();
 }
 
 const addProductToVideo = async (videoId: string, productId: ObjectId): Promise<IVideo | null> => {

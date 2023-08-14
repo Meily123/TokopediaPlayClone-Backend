@@ -4,7 +4,7 @@ export interface IVideoInput {
     likes?: ObjectId[];
     thumbnailUrl: string;
     views?: number;
-    kategori: string;
+    category: string;
     description: string;
     createdBy: ObjectId;
     videoUrl: string;

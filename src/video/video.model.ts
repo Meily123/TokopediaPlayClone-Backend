@@ -7,7 +7,7 @@ const videoSchema = new Schema<VideosDocument>({
     likes: [{ type: Types.ObjectId, ref: 'users' }],
     thumbnailUrl: { type: String, required: true },
     views: { type: Number, default: 0 },
-    kategori: { type: String, required: true },
+    category: { type: String, required: true },
     description: { type: String, required: true },
     createdBy: { type: Types.ObjectId, required: true, ref: 'users' },
     videoUrl: { type: String, required: true },
