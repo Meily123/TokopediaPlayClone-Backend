@@ -10,9 +10,14 @@ const findUserByUsername = async (username) => {
     return User.findOne({ username });
 };
 
+const findUserById = async (id) => {
+    return await User.findOne({ _id: id });
+};
+
 const userRepository = {
     createUser,
     findUserByUsername,
+    findUserById,
 };
 
 export default userRepository;

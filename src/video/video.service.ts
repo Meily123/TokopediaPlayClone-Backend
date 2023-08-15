@@ -1,4 +1,4 @@
-import {IVideo, IVideoInput} from './video.interface';
+import {IVideo, IVideoInput, IVideoResponse} from './video.interface';
 import videoRepository from './video.repository';
 import {ProductModel} from "../product/product.model";
 import userRepository from "../user/user.repository";
@@ -19,16 +19,47 @@ const addVideo = async (videoInput: IVideoInput, requestUser: IUser): Promise<IV
     return videoRepository.createVideo(videoInput);
 };
 
-const retrieveAllVideos = async (): Promise<IVideo[]> => {
-    return videoRepository.getAllVideos();
+const retrieveAllVideos = async (): Promise<IVideoResponse[]> => {
+    const videos = await videoRepository.getAllVideos();
+
+    // Use Promise.all to await the async operations inside map
+    return await Promise.all(videos.map(async (video) => {
+        const user = await userRepository.findUserById(video.createdBy);
+
+        const videoResponse: IVideoResponse = {
+            videoUrl: video.videoUrl,
+            createdBy: user.username,
+            description: video.description,
+            category: video.category,
+            thumbnailUrl: video.thumbnailUrl,
+            likes: video.likes,
+            views: video.views,
+            products: video.products,
+            id: video.id,
+        };
+
+        return videoResponse; // Return the updated video object
+    }));
 };
 
-const retrieveVideoById = async (id: string): Promise<IVideo | null> => {
+const retrieveVideoById = async (id: string): Promise<IVideoResponse | null> => {
     const video = await videoRepository.updateVideoViews(id);
     if (!video) {
         throw new AppError(ERROR_CODE.NOT_FOUND);
     }
-    return video;
+    const user = await userRepository.findUserById(video.createdBy);
+    const videoResponse: IVideoResponse = {
+        videoUrl: video.videoUrl,
+        createdBy: user.username,
+        description: video.description,
+        category: video.category,
+        thumbnailUrl: video.thumbnailUrl,
+        likes: video.likes,
+        views: video.views,
+        products: video.products,
+        id: video.id,
+    };
+    return videoResponse;
 };
 
 const addProductToVideo = async (videoId: string, productId: string): Promise<IVideo | null> => {
