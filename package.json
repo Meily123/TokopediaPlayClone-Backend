@@ -27,6 +27,6 @@
     "typescript": "^5.1.6"
   },
   "resolutions": {
-    "engine.io": "6.5.1"
+    "engine.io": "5.0.0"
   }
 }
