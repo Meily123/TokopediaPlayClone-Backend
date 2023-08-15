@@ -35,7 +35,7 @@ const retrieveAllVideos = async (): Promise<IVideoResponse[]> => {
             likes: video.likes,
             views: video.views,
             products: video.products,
-            id: video.id,
+            _id: video.id,
         };
 
         return videoResponse; // Return the updated video object
@@ -57,7 +57,7 @@ const retrieveVideoById = async (id: string): Promise<IVideoResponse | null> => 
         likes: video.likes,
         views: video.views,
         products: video.products,
-        id: video.id,
+        _id: video.id,
     };
     return videoResponse;
 };

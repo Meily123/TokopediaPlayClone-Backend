@@ -16,7 +16,7 @@ export interface IVideo extends IVideoInput {
 }
 
 export interface IVideoResponse {
-    id: ObjectId;
+    _id: ObjectId;
     likes?: ObjectId[];
     thumbnailUrl: string;
     views?: number;
